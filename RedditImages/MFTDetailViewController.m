@@ -27,7 +27,6 @@
 - (void)dealloc
 {
 	[_detailItem release];
-	
 	[_masterPopoverController release];
 	[connection release];
 	[accretion release];
@@ -121,7 +120,7 @@
 
 -(void)recognizedForwardSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
 {
-	NSLog(@"recognized forward swipe %@", gestureRecognizer);
+	
 	
 	if(currentlyDisplayedImageIndex + 1 < imageViews.count)
 	{
@@ -131,11 +130,25 @@
 		
 	}
 	
+	// Is it time to load more images after the final one?
+	if(currentlyDisplayedImageIndex == imageViews.count -3)
+	{
+		
+		
+		NSString *currentURL = [[_detailItem allValues] objectAtIndex:0];
+		NSLog(@"currentURL: %@", currentURL);
+		NSString *baseURL = [currentURL stringByDeletingLastPathComponent];
+		NSString *finalName = [[imageData lastObject] objectForKey:@"name"];
+		NSString *queryString = [NSString stringWithFormat:@"/.json?count=25&after=%@", finalName];
+		NSString *newURL = [baseURL stringByAppendingString:queryString];
+		
+		[self loadImagesForURL:newURL];
+	}
+	
 }
 
 -(void)recognizedBackSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
 {
-	NSLog(@"recognized back swipe %@", gestureRecognizer);
 	
 	if(currentlyDisplayedImageIndex - 1 >= 0 && imageViews.count > 0)
 	{
@@ -217,12 +230,28 @@
 				{
 					if([imageURL hasSuffix:@".jpg"] || [imageURL hasSuffix:@".png"])
 					{
+						
 						NSDictionary *importantInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 													   imageURL, @"imageURL",
 													   [data objectForKey:@"name"], @"name",
 													   nil];
-						[imageData addObject:importantInfo];
-						NSLog(@"%@", importantInfo);
+						
+						// Discard dupe images
+						BOOL keep = YES;
+						for(NSDictionary *existingInfo in imageData)
+						{
+							if([[existingInfo objectForKey:@"imageURL"] isEqualToString:imageURL])
+							{
+								keep = NO;
+								break;
+							}
+						}
+						
+						if(keep)
+						{
+							[imageData addObject:importantInfo];
+							NSLog(@"%@", importantInfo);
+						}
 					}
 				}
 			}
@@ -240,7 +269,7 @@
 			[imageViews addObject:asyncImage];
 			
 			// If this is the first image url, display it now
-			if(i == 0)
+			if(i == currentlyDisplayedImageIndex)
 			{
 				[self.view addSubview:asyncImage];
 			}

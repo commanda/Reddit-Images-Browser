@@ -18,7 +18,7 @@
 	int currentlyDisplayedImageIndex;
 }
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) NSDictionary *detailItem;
 
 
 
