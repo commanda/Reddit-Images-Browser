@@ -145,6 +145,12 @@
 		[imageURLs release];
 		imageURLs = [[NSMutableArray alloc] init];
 		
+		if(!imageViews)
+		{
+			imageViews = [[NSMutableArray alloc] init];
+		}
+		[imageViews removeAllObjects];
+		
 		[accretion release];
 		accretion = [[NSMutableData alloc] init];
 		
@@ -171,10 +177,10 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	NSString *dataString = [[NSString alloc] initWithData:accretion encoding:NSUTF8StringEncoding];
-	//NSLog(@"data as string: %@", dataString);
+	
 	
 	NSDictionary *object = [dataString JSONValue];
-	//NSLog(@"\n\n\n\n\n\n\nobject: %@", object);
+	
 	
 	if([object isKindOfClass:[NSDictionary class]])
 	{
@@ -199,15 +205,23 @@
 
 	
 	// Download each image
+	int i = 0;
 	for(NSString *imageURL in imageURLs)
 	{
 		RIAsyncImage *asyncImage = [[RIAsyncImage alloc] init];
 		asyncImage.urlString = imageURL;
 		
-		// Temporary - just throw the image up on the detail view controller for now
-		[self.view addSubview:asyncImage];
+		[imageViews addObject:asyncImage];
+		
+		// If this is the first image url, display it now
+		if(i == 0)
+		{
+			[self.view addSubview:asyncImage];
+		}
 		
 		[asyncImage release];
+		
+		i++;
 	}
 	
 	

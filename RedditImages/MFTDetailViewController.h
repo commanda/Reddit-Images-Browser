@@ -13,6 +13,7 @@
 	NSURLConnection *connection;
 	NSMutableData *accretion;
 	NSMutableArray *imageURLs;
+	NSMutableArray *imageViews;
 }
 
 @property (strong, nonatomic) id detailItem;
