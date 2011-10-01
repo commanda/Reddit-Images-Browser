@@ -125,7 +125,8 @@
 	// Download each image
 	for(NSString *imageURL in imageURLs)
 	{
-		RIAsyncImage *asyncImage = [[RIAsyncImage alloc] initWithFrame:CGRectMake(100, 100, 100, 100) urlString:imageURL];
+		RIAsyncImage *asyncImage = [[RIAsyncImage alloc] init];
+		asyncImage.urlString = imageURL;
 		[asyncImageViews addObject:asyncImage];
 		
 		// Temporary - just throw the image up on the detail view controller for now

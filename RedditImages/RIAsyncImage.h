@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RIAsyncImage : UIImageView
+@interface RIAsyncImage : UIImageView <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 {
 	NSString *urlString;
+	NSURLConnection *connection;
+	NSMutableData *accretion;
 }
 
 @property (nonatomic, retain) NSString *urlString;
 
-- (id)initWithFrame:(CGRect)frame urlString:(NSString *)theUrlString;
+
 
 @end
