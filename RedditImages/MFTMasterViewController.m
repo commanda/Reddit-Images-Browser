@@ -134,6 +134,12 @@
 	    }
         [self.navigationController pushViewController:self.detailViewController animated:YES];
     }
+	else
+	{
+		NSString *key = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+		NSString *value = [tableData objectForKey:key];
+		_detailViewController.detailItem = [NSDictionary dictionaryWithObjectsAndKeys:value, key, nil]; 
+	}
 }
 
 @end

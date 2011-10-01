@@ -14,4 +14,5 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 
+
 @end

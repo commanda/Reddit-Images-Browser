@@ -49,6 +49,7 @@
     // Update the user interface for the detail item.
 
 	if (self.detailItem) {
+		self.title = [[_detailItem allKeys] objectAtIndex:0];
 	    self.detailDescriptionLabel.text = [self.detailItem description];
 	}
 }
