@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface MFTDetailViewController : UIViewController <UISplitViewControllerDelegate>
+{
+	NSURLConnection *connection;
+	NSMutableData *accretion;
+	NSMutableArray *imageURLs;
+}
 
 @property (strong, nonatomic) id detailItem;
 

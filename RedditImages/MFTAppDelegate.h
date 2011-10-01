@@ -12,10 +12,7 @@
 
 @interface MFTAppDelegate : UIResponder <UIApplicationDelegate, NSURLConnectionDelegate>
 {
-	NSURLConnection *connection;
-	NSMutableData *accretion;
-	NSMutableArray *imageURLs;
-	NSMutableArray *asyncImageViews;
+
 	
 	MFTDetailViewController *currentDetailVC;
 }

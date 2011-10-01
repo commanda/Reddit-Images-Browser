@@ -7,10 +7,13 @@
 //
 
 #import "MFTDetailViewController.h"
+#import "JSON.h"
+#import "RIAsyncImage.h"
 
 @interface MFTDetailViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
+-(void)loadImagesForURL:(NSString *)urlString;
 @end
 
 @implementation MFTDetailViewController
@@ -24,6 +27,9 @@
 	[_detailItem release];
 	[_detailDescriptionLabel release];
 	[_masterPopoverController release];
+	[connection release];
+	[accretion release];
+	[imageURLs release];
     [super dealloc];
 }
 
@@ -51,6 +57,8 @@
 	if (self.detailItem) {
 		self.title = [[_detailItem allKeys] objectAtIndex:0];
 	    self.detailDescriptionLabel.text = [self.detailItem description];
+		
+		[self loadImagesForURL:[_detailItem objectForKey:self.title]];
 	}
 }
 
@@ -119,6 +127,93 @@
     }
     return self;
 }
+
+
+-(void)loadImagesForURL:(NSString *)urlString
+{
+	if(urlString)
+	{
+		// Remove all our existing subviews
+		for (UIView *subview in self.view.subviews)
+		{
+			if([subview isKindOfClass:[RIAsyncImage class]])
+			{
+				[subview removeFromSuperview];
+			}
+		}
+		
+		[imageURLs release];
+		imageURLs = [[NSMutableArray alloc] init];
+		
+		[accretion release];
+		accretion = [[NSMutableData alloc] init];
+		
+		
+		NSURL *url = [NSURL URLWithString:urlString];
+		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+		connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
+	}
+	
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response
+{
+	NSLog(@"response: %@", response);
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+	
+	[accretion appendData:data];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	NSString *dataString = [[NSString alloc] initWithData:accretion encoding:NSUTF8StringEncoding];
+	//NSLog(@"data as string: %@", dataString);
+	
+	NSDictionary *object = [dataString JSONValue];
+	//NSLog(@"\n\n\n\n\n\n\nobject: %@", object);
+	
+	if([object isKindOfClass:[NSDictionary class]])
+	{
+		NSArray *children = [[object objectForKey:@"data"] objectForKey:@"children"];
+		
+		for(NSDictionary *entry in children)
+		{
+			NSDictionary *data = [entry objectForKey:@"data"];
+			
+			NSString *imageURL = [data objectForKey:@"url"];
+			if(imageURL)
+			{
+				if([imageURL hasSuffix:@".jpg"] || [imageURL hasSuffix:@".png"])
+				{
+					[imageURLs addObject:imageURL];
+					NSLog(@"%@", imageURL);
+				}
+			}
+		}
+	}
+	
+
+	
+	// Download each image
+	for(NSString *imageURL in imageURLs)
+	{
+		RIAsyncImage *asyncImage = [[RIAsyncImage alloc] init];
+		asyncImage.urlString = imageURL;
+		
+		// Temporary - just throw the image up on the detail view controller for now
+		[self.view addSubview:asyncImage];
+		
+		[asyncImage release];
+	}
+	
+	
+}
+
+
 							
 #pragma mark - Split view
 
