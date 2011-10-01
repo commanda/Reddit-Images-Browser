@@ -19,13 +19,13 @@
 @implementation MFTDetailViewController
 
 @synthesize detailItem = _detailItem;
-@synthesize detailDescriptionLabel = _detailDescriptionLabel;
+
 @synthesize masterPopoverController = _masterPopoverController;
 
 - (void)dealloc
 {
 	[_detailItem release];
-	[_detailDescriptionLabel release];
+	
 	[_masterPopoverController release];
 	[connection release];
 	[accretion release];
@@ -56,7 +56,7 @@
 
 	if (self.detailItem) {
 		self.title = [[_detailItem allKeys] objectAtIndex:0];
-	    self.detailDescriptionLabel.text = [self.detailItem description];
+		
 		
 		[self loadImagesForURL:[_detailItem objectForKey:self.title]];
 	}
@@ -76,10 +76,6 @@
 	// Do any additional setup after loading the view, typically from a nib.
 	[self configureView];
 	
-	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(200, 200, 200, 200)];
-	view.backgroundColor = [UIColor greenColor];
-	[self.view addSubview:view];
-	[view release];
 }
 
 - (void)viewDidUnload
