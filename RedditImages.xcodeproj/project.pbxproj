@@ -32,6 +32,7 @@
 		90221829143780A3005F42F4 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9022181C143780A3005F42F4 /* SBJsonWriter.m */; };
 		9022182A143780A3005F42F4 /* SBUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 9022181E143780A3005F42F4 /* SBUTF8Stream.m */; };
 		9022183314378A00005F42F4 /* RIAsyncImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9022183214378A00005F42F4 /* RIAsyncImage.m */; };
+		9022183D1437AA24005F42F4 /* Subreddits.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9022183C1437AA24005F42F4 /* Subreddits.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		9022181E143780A3005F42F4 /* SBUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBUTF8Stream.m; sourceTree = "<group>"; };
 		9022183114378A00005F42F4 /* RIAsyncImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIAsyncImage.h; sourceTree = "<group>"; };
 		9022183214378A00005F42F4 /* RIAsyncImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIAsyncImage.m; sourceTree = "<group>"; };
+		9022183C1437AA24005F42F4 /* Subreddits.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Subreddits.plist; path = Resources/Subreddits.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 				902217EE14377759005F42F4 /* MFTMasterViewController_iPad.xib */,
 				902217F114377759005F42F4 /* MFTDetailViewController_iPhone.xib */,
 				902217F414377759005F42F4 /* MFTDetailViewController_iPad.xib */,
+				9022183B1437A9D4005F42F4 /* Resources */,
 				902217DA14377759005F42F4 /* Supporting Files */,
 			);
 			path = RedditImages;
@@ -187,6 +190,14 @@
 				9022181E143780A3005F42F4 /* SBUTF8Stream.m */,
 			);
 			path = SBJSON;
+			sourceTree = "<group>";
+		};
+		9022183B1437A9D4005F42F4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9022183C1437AA24005F42F4 /* Subreddits.plist */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +255,7 @@
 				902217F014377759005F42F4 /* MFTMasterViewController_iPad.xib in Resources */,
 				902217F314377759005F42F4 /* MFTDetailViewController_iPhone.xib in Resources */,
 				902217F614377759005F42F4 /* MFTDetailViewController_iPad.xib in Resources */,
+				9022183D1437AA24005F42F4 /* Subreddits.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +420,7 @@
 				902217FB14377759005F42F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

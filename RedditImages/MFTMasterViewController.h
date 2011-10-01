@@ -11,6 +11,9 @@
 @class MFTDetailViewController;
 
 @interface MFTMasterViewController : UITableViewController
+{
+	NSDictionary *tableData;
+}
 
 @property (strong, nonatomic) MFTDetailViewController *detailViewController;
 

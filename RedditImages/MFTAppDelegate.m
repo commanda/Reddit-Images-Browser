@@ -47,6 +47,7 @@
 	    
 	    MFTDetailViewController *detailViewController = [[[MFTDetailViewController alloc] initWithNibName:@"MFTDetailViewController_iPad" bundle:nil] autorelease];
 		
+		masterViewController.detailViewController = detailViewController;
 		
 		currentDetailVC = [detailViewController retain];
 		
