@@ -14,6 +14,8 @@
 	NSMutableData *accretion;
 	NSMutableArray *imageURLs;
 	NSMutableArray *imageViews;
+	
+	int currentlyDisplayedImageIndex;
 }
 
 @property (strong, nonatomic) id detailItem;

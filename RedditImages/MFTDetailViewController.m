@@ -121,12 +121,29 @@
 
 -(void)recognizedForwardSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
 {
-	NSLog(@"recognized swipe %@", gestureRecognizer);
+	NSLog(@"recognized forward swipe %@", gestureRecognizer);
+	
+	if(currentlyDisplayedImageIndex + 1 < imageViews.count)
+	{
+		[[imageViews objectAtIndex:currentlyDisplayedImageIndex] removeFromSuperview];
+		currentlyDisplayedImageIndex++;
+		[self.view addSubview:[imageViews objectAtIndex:currentlyDisplayedImageIndex]];
+		
+	}
+	
 }
 
 -(void)recognizedBackSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
 {
-	NSLog(@"recognized swipe %@", gestureRecognizer);
+	NSLog(@"recognized back swipe %@", gestureRecognizer);
+	
+	if(currentlyDisplayedImageIndex - 1 >= 0 && imageViews.count > 0)
+	{
+		[[imageViews objectAtIndex:currentlyDisplayedImageIndex] removeFromSuperview];
+		currentlyDisplayedImageIndex--;
+		[self.view addSubview:[imageViews objectAtIndex:currentlyDisplayedImageIndex]];
+		
+	}
 }
 
 -(void)loadImagesForURL:(NSString *)urlString
