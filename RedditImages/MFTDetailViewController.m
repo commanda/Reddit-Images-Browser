@@ -22,6 +22,8 @@
 
 @synthesize masterPopoverController = _masterPopoverController;
 
+
+
 - (void)dealloc
 {
 	[_detailItem release];
@@ -76,6 +78,17 @@
 	// Do any additional setup after loading the view, typically from a nib.
 	[self configureView];
 	
+	// Add a swipe gesture recognizer
+	UISwipeGestureRecognizer *rightSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(recognizedBackSwipe:)];
+	rightSwipeRecognizer.direction = (UISwipeGestureRecognizerDirectionRight);
+	[self.view addGestureRecognizer:rightSwipeRecognizer];
+	[rightSwipeRecognizer release];
+	
+	UISwipeGestureRecognizer *leftSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(recognizedForwardSwipe:)];
+	leftSwipeRecognizer.direction = (UISwipeGestureRecognizerDirectionLeft);
+	[self.view addGestureRecognizer:leftSwipeRecognizer];
+	[leftSwipeRecognizer release];
+	
 }
 
 - (void)viewDidUnload
@@ -85,25 +98,7 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[super viewDidDisappear:animated];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -124,6 +119,15 @@
     return self;
 }
 
+-(void)recognizedForwardSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
+{
+	NSLog(@"recognized swipe %@", gestureRecognizer);
+}
+
+-(void)recognizedBackSwipe:(UISwipeGestureRecognizer *)gestureRecognizer;
+{
+	NSLog(@"recognized swipe %@", gestureRecognizer);
+}
 
 -(void)loadImagesForURL:(NSString *)urlString
 {

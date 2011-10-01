@@ -27,7 +27,7 @@
 			NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Subreddits.plist" ofType:nil];
 			tableData = [[NSDictionary dictionaryWithContentsOfFile:filePath] retain];
 			
-			NSLog(@"subreddits: %@", tableData);
+			
 		}
     }
     return self;
@@ -54,6 +54,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 	    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+		
 	}
 }
 
@@ -64,26 +65,6 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[super viewDidDisappear:animated];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
@@ -92,6 +73,13 @@
 	} else {
 	    return YES;
 	}
+}
+
+-(void)setDetailViewController:(MFTDetailViewController *)detailViewController
+{
+	[_detailViewController release];
+	_detailViewController = [detailViewController retain];
+	
 }
 
 
