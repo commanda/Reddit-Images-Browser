@@ -12,7 +12,7 @@
 {
 	NSURLConnection *connection;
 	NSMutableData *accretion;
-	NSMutableArray *imageURLs;
+	NSMutableArray *imageData;
 	NSMutableArray *imageViews;
 	
 	int currentlyDisplayedImageIndex;

@@ -31,7 +31,7 @@
 	[_masterPopoverController release];
 	[connection release];
 	[accretion release];
-	[imageURLs release];
+	[imageData release];
     [super dealloc];
 }
 
@@ -159,19 +159,21 @@
 			}
 		}
 		
-		[imageURLs release];
-		imageURLs = [[NSMutableArray alloc] init];
+		if(!imageData)
+		{
+			imageData = [[NSMutableArray alloc] init];
+		}
 		
 		if(!imageViews)
 		{
 			imageViews = [[NSMutableArray alloc] init];
 		}
-		[imageViews removeAllObjects];
+		
 		
 		[accretion release];
 		accretion = [[NSMutableData alloc] init];
 		
-		
+		[connection release];
 		NSURL *url = [NSURL URLWithString:urlString];
 		NSURLRequest *request = [NSURLRequest requestWithURL:url];
 		connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
@@ -179,69 +181,76 @@
 	
 }
 
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response
+-(void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSHTTPURLResponse *)response
 {
 	NSLog(@"response: %@", response);
 }
 
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+-(void)connection:(NSURLConnection *)theConnection didReceiveData:(NSData *)data
 {
-	
+	if([connection isEqual:theConnection])
 	[accretion appendData:data];
 }
 
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+- (void)connectionDidFinishLoading:(NSURLConnection *)theConnection
 {
-	NSString *dataString = [[NSString alloc] initWithData:accretion encoding:NSUTF8StringEncoding];
-	
-	
-	NSDictionary *object = [dataString JSONValue];
-	
-	
-	if([object isKindOfClass:[NSDictionary class]])
+	if([connection isEqual:theConnection])
 	{
-		NSArray *children = [[object objectForKey:@"data"] objectForKey:@"children"];
+	
+		NSString *dataString = [[NSString alloc] initWithData:accretion encoding:NSUTF8StringEncoding];
 		
-		for(NSDictionary *entry in children)
+		
+		NSDictionary *object = [dataString JSONValue];
+		
+		
+		if([object isKindOfClass:[NSDictionary class]])
 		{
-			NSDictionary *data = [entry objectForKey:@"data"];
+			NSArray *children = [[object objectForKey:@"data"] objectForKey:@"children"];
 			
-			NSString *imageURL = [data objectForKey:@"url"];
-			if(imageURL)
+			for(NSDictionary *entry in children)
 			{
-				if([imageURL hasSuffix:@".jpg"] || [imageURL hasSuffix:@".png"])
+				NSDictionary *data = [entry objectForKey:@"data"];
+				
+				NSString *imageURL = [data objectForKey:@"url"];
+				if(imageURL)
 				{
-					[imageURLs addObject:imageURL];
-					NSLog(@"%@", imageURL);
+					if([imageURL hasSuffix:@".jpg"] || [imageURL hasSuffix:@".png"])
+					{
+						NSDictionary *importantInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+													   imageURL, @"imageURL",
+													   [data objectForKey:@"name"], @"name",
+													   nil];
+						[imageData addObject:importantInfo];
+						NSLog(@"%@", importantInfo);
+					}
 				}
 			}
 		}
-	}
-	
+		
 
-	
-	// Download each image
-	int i = 0;
-	for(NSString *imageURL in imageURLs)
-	{
-		RIAsyncImage *asyncImage = [[RIAsyncImage alloc] init];
-		asyncImage.urlString = imageURL;
 		
-		[imageViews addObject:asyncImage];
-		
-		// If this is the first image url, display it now
-		if(i == 0)
+		// Download each image
+		int i = 0;
+		for(NSDictionary *importantInfo in imageData)
 		{
-			[self.view addSubview:asyncImage];
+			RIAsyncImage *asyncImage = [[RIAsyncImage alloc] init];
+			asyncImage.urlString = [importantInfo objectForKey:@"imageURL"];
+			
+			[imageViews addObject:asyncImage];
+			
+			// If this is the first image url, display it now
+			if(i == 0)
+			{
+				[self.view addSubview:asyncImage];
+			}
+			
+			[asyncImage release];
+			
+			i++;
 		}
 		
-		[asyncImage release];
-		
-		i++;
 	}
-	
-	
 }
 
 
